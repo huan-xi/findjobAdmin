@@ -101,12 +101,7 @@
         </div>
         <div class="tDiv">
             <div class="tDiv2">
-                <div class="fbutton"><a href="{:url('add_user')}">
-                    <div class="add" title="新增会员">
-                        <span><i class="fa fa-plus"></i>新增会员</span>
-                    </div>
-                </a></div>
-                <div class="fbutton"><a href="{:url('level',['o'=>'add'])}">
+                <div id="delete_select" class="fbutton"><a href="javascript:void(0)">
                     <div class="add" title="批量禁用用户">
                         <span>批量禁用用户</span>
                     </div>
@@ -120,6 +115,7 @@
     <script>
         // ajax 抓取页面
         function ajax_get_table(tab, page) {
+            var index = layer.load();
             var search_key = $.trim($('#search_key').val());
             if (search_key.length > 0) {
                 if (checkEmail(search_key)) {
@@ -138,6 +134,9 @@
                 success: function (data) {
                     $("#ajax_return").html('');
                     $("#ajax_return").append(data);
+                },
+                complete:function (msg) {
+                    layer.close(index)
                 }
             });
         }
@@ -148,7 +147,7 @@
             $('#end_time').layDate();
             // 点击刷新数据
             $('.fa-refresh').click(function () {
-                location.href = location.href;
+                ajax_get_table('search-form2', 1);
             });
             ajax_get_table('search-form2', 1);
         });

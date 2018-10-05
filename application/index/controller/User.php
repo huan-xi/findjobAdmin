@@ -23,6 +23,25 @@ class  User extends BaseController
         return $this->fetch();
     }
 
+    //启用用户
+    public function able_user()
+    {
+        $user_id = input('user_id');
+        $user = UserModel::get($user_id);
+        if ($user->save(['status' => Constant::getROUESTATUSNORMAL()]))
+            json_return(['status' => 1, 'msg' => '用户已启用']);
+        json_return(['status' => 0, 'msg' => '用户启用失败']);
+    }
+    //编辑用户
+    public function edit_user(){
+        $user_id=input('id');
+        $phone=input('phone');
+        $name=input('name');
+        $user_id=UserModel::get($user_id);
+        if($user_id->save(['phone'=>$phone,'name'=>$name]))
+            json_return(['status' => 1, 'msg' => '修改用户成功']);
+        json_return(['status' => 0, 'msg' => '修改用户失败']);
+    }
     //删除用户
     public function del_user()
     {
@@ -43,7 +62,8 @@ class  User extends BaseController
         $key_type = $post['key_type'];
         $key = $post['keywords'];
         $pageCount = '10';
-        $status = $post['status'] == '100' ? 'status =1 or status = 0' : 'status=' . $post['status'];
+        $status = $post['status'] == '100' ? 'status ='+Constant::getROUESTATUSNORMAL()
+            + 'or status = '+Constant::getROUESTATUSFORBID() : 'status=' . $post['status'];
         try {
             //   $users=UserModel::all();
             $users = (new UserModel())
@@ -64,7 +84,7 @@ class  User extends BaseController
         $page = new AjaxPage($count, $pageCount);
         $this->assign('page', $page->show());
         $this->assign('users', $users);
-        $this->assign('count',$count);
+        $this->assign('count', $count);
         return $this->fetch();
     }
 }

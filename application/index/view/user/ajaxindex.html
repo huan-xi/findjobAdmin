@@ -21,9 +21,11 @@
                 </td>
                 <td align="center" class="handle">
                     <div style="text-align: center; width: 170px; max-width:170px;">
-                        <a href="{:url('edit_route')}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                        <a href="javascript:void(0)" onClick="edit(this)" data-phone="{$vo.phone}"
+                           data-name="{$vo.name}" data-url="{:url('edit_user')}" data-id="{$vo.user_id}"
+                           class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                         <a class="btn red" href="javascript:void(0)"
-                           data-url="{:$vo.status?url('del_user'):url('able_user')}"
+                           data-url="{:$vo.status=='1'?url('del_user'):url('able_user')}"
                            data-id="{$vo.user_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>{:$vo.status=="1"?"禁用":"启用"}</a>
                     </div>
                 </td>
@@ -37,6 +39,7 @@
     </div>
     <div class="iDiv" style="display: none;"></div>
 </div>
+
 <!--分页位置-->
 {$page}
 <script>
@@ -48,6 +51,74 @@
         var page = $(this).data('p');
         ajax_get_table('search-form2', page);
     });
+
+    //编辑点击
+    function edit(obj) {
+        // 编辑按钮
+        var name = $(obj).attr('data-name');
+        var phone = $(obj).attr('data-phone');
+        var url = $(obj).attr('data-url');
+        var id = $(obj).attr('data-id');
+        var edit = layer.open({
+            id: 1,
+            type: 1,
+            title: '编辑用户',
+            content: "<div class=\"ncap-form-default\">\n" +
+                "    <dl class=\"row\">\n" +
+                "        <dt class=\"tit\">\n" +
+                "            <label for=\"record_no\">修改的手机号</label>\n" +
+                "        </dt>\n" +
+                "        <dd class=\"opt\">\n" +
+                "            <input id=\"phone\" name=\"record_no\"  class=\"input-txt\" type=\"text\">\n" +
+                "            <p class=\"notic\">修改的手机号</p>\n" +
+                "        </dd>\n" +
+                "    </dl>\n" +
+                "    <dl class=\"row\">\n" +
+                "        <dt class=\"tit\">\n" +
+                "            <label for=\"record_no\">修改的名字</label>\n" +
+                "        </dt>\n" +
+                "        <dd class=\"opt\">\n" +
+                "            <input id=\"name\" name=\"record_no\" class=\"input-txt\" type=\"text\">\n" +
+                "            <p class=\"notic\">修改的名字</p>\n" +
+                "        </dd>\n" +
+                "    </dl>\n" +
+                "</div>",
+            btn: ['保存', '取消'],
+            btn1: function () {
+                if (checkMobile($("#phone").val())){
+                    layer.load(2);
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        data: {
+                            user_id: id,
+                            phone:$("#phone").val(),
+                            name: $("#name").val(),
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.closeAll();
+                                layer.msg(data.msg, {icon: 1});
+                                ajax_get_table('search-form2', 1);
+                            } else {
+                                layer.closeAll();
+                                layer.alert(data.msg, {icon: 2});
+                            }
+                        },
+                    })
+                }else
+                    layer.alert('请输入正确手机号码', {icon: 2});
+            },
+            btn2: function () {
+                layer.close(edit)
+            }
+        });
+        $("#phone").val(phone);
+        $("#name").val(name);
+        layer.style(edit, {width: '530px'});
+    }
+
     //选中全部
     $('.hDivBox .sign').click(function () {
         var sign = $('#flexigrid > table>tbody>tr');
@@ -73,6 +144,7 @@
         layer.confirm("确认此操作？", {
             btn: ['确定', '取消'] //按钮
         }, function () {
+            layer.load(2);
             $.ajax({
                 type: 'post',
                 url: $(obj).attr('data-url'),
@@ -82,12 +154,12 @@
                     layer.closeAll();
                     if (data.status == 1) {
                         layer.msg(data.msg, {icon: 1});
-                        location.href = location.href;
+                        ajax_get_table('search-form2', 1);
                     } else {
+                        layer.closeAll();
                         layer.alert(data.msg, {icon: 2});
                     }
                 },
-
             })
         }, function () {
             layer.closeAll();

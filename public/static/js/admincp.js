@@ -43,13 +43,8 @@
     $('.sub-menu').find('a').click(function(){
         openItem($(this).attr('data-param'));
     });
-    if ($.cookie('workspaceParam') == null) {
-        // 默认选择第一个菜单
-        //$('.nc-module-menu').find('li:first > a').click();
         openItem('welcome|Index');
-    } else {
-        openItem('welcome|Index');
-    }
+
     // 导航菜单  显示
     $('a[tptype="map_on"],a[class="add-menu"]').click(function(){
         $('div[tptype="map_nav"]').show();
@@ -64,30 +59,7 @@
         $('div[data-param^="map-"]').hide();
         $('div[data-param="' + $(this).attr('data-param') + '"]').show();
     });
-	/*
-    $('div[data-param^="map-"]').find('i').click(function(){
-        var $this = $(this);
-        var _value = $this.prev().attr('data-param');
-        if ($this.parent().hasClass('selected')) {
-            $.getJSON('index.php?act=common&op=common_operations', {type : 'del', value : _value}, function(data){
-                if (data) {
-                    $this.parent().removeClass('selected');
-                    $('ul[tptype="quick_link"]').find('a[onclick="openItem(\'' + _value + '\')"]').parent().remove();
-                }
-            });
-        } else {
-            var _name = $this.prev().html();
-            $.getJSON('index.php?act=common&op=common_operations', {type : 'add', value : _value}, function(data){
-                if (data) {
-                    $this.parent().addClass('selected');
-                    $('ul[tptype="quick_link"]').append('<li><a onclick="openItem(\'' + _value + '\')" href="javascript:void(0);">' + _name + '</a></li>');
-                }
-            });
-        }
-    }).end().find('a').click(function(){
-        openItem($(this).attr('data-param'));
-    });
-	*/
+
     // 导航菜单默认值显示第一组菜单
     $('div[data-param^="map-"]:first').nextAll().hide();
     $('A[data-param^="map-"]:first').parent().addClass('selected');
@@ -106,10 +78,8 @@ function openItem(param) {
     }
     $('div[id^="admincpNavTabs_"]').hide().find('dl').removeClass('active');
     $('li[data-param="' + data_str[1] + '"]').addClass('active');
-    //$('li[data-param="' + data_str[0] + '"]').addClass('active');
     $this.parent().addClass('active').parents('dl:first').addClass('active').parents('div:first').show();
     $('#workspace').attr('src','/index.php/Index/'+data_str[1] + '/' + data_str[0]);
-    $.cookie('workspaceParam', data_str[0] + '|' + data_str[1], { expires: 1 ,path:"/"});
 }
 
 /* 显示Ajax表单 */

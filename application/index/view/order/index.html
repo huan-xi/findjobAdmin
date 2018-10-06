@@ -7,8 +7,8 @@
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
-                <h3>会员管理</h3>
-                <h5>网站系统会员索引与管理</h5>
+                <h3>订单管理</h3>
+                <h5>网站系统订单索引与管理</h5>
             </div>
         </div>
     </div>
@@ -23,6 +23,8 @@
             <li>会员管理，可增加,删除,或修改快递订单</li>
             <li>点击最前面的星星可以选择</li>
             <li>点击时间可根据时间排序</li>
+            <li>搜索是根据创建时间搜索</li>
+            <li>对订单做删除操作后不会再显示到用户记录</li>
         </ul>
     </div>
     <div class="flexigrid">
@@ -32,7 +34,7 @@
                 <h5>(共<span id="count">{$count}</span>条记录)</h5>
             </div>
             <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
-            <form class="navbar-form form-inline" method="post" action="/index.php/Index/User/ajaxindex"
+            <form class="navbar-form form-inline" method="post" action=""
                   name="search-form2" id="search-form2">
                 <input id="sort" name="sort" value="desc" type="hidden">
                 <!--用于查看结算统计 包含了哪些订单-->
@@ -50,29 +52,14 @@
                     <div class="sDiv2">
                         <select name="status" class="select sDiv3">
                             <option value="100">状态</option>
-                            <option value="1">正常</option>
-                            <option value="2">禁用</option>
+                            <option value="1">待完成</option>
+                            <option value="3">已完成</option>
+                            <option value="4">已取消</option>
+                            <option value="5">已删除</option>
                         </select>
                     </div>
                     <div class="sDiv2">
-                        <select name="valid" class="select sDiv3">
-                            <option value="100">审核</option>
-                            <option value="1">待审核</option>
-                            <option value="2">已通过</option>
-                            <option value="3">未通过</option>
-                        </select>
-                    </div>
-                    <div class="sDiv2">
-                        <select name="key_type" class="select">
-                            <option value="name">用户名</option>
-                            <option value="phone">手机号</option>
-                        </select>
-                    </div>
-                    <div class="sDiv2">
-                        <input size="30" name="keywords" class="qsbox" placeholder="搜索相关数据..." type="text">
-                    </div>
-                    <div class="sDiv2">
-                        <input onclick="ajax_get_table('search-form2',1)" class="btn" value="搜索" type="button">
+                        <input onclick="ajax_get_table('search-form2',1)" class="btn" value="筛选" type="button">
                     </div>
                 </div>
             </form>
@@ -86,25 +73,22 @@
                             <div style="width: 24px;"><i class="ico-check"></i></div>
                         </th>
                         <th align="left" abbr="article_title" axis="col3" class="">
-                            <div style="text-align: left; width: 50px;" class="">用户名</div>
+                            <div style="text-align: left; width: 150px;" class="">职位信息</div>
                         </th>
-                        <th align="center" axis="col1">
-                            <div style="width: 100px;text-align:center">手机号</div>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 80px;" class="">接单人</div>
                         </th>
                         <th id="time" align="center" abbr="article_time" axis="col6" class="">
-                            <div style="text-align: center; width: 150px;" class="">注册时间</div>
+                            <div style="text-align: center; width: 150px;" class="">创建时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="">修改时间</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
                             <div style="text-align: center; width: 50px;" class="">状态</div>
                         </th>
-                        <th align="center" abbr="article_time" axis="col6" class="">
-                            <div style="text-align: center; width: 50px;" class="">审核</div>
-                        </th>
                         <th align="center" axis="col1" class="handle">
                             <div style="text-align: center; width: 150px;">状态操作</div>
-                        </th>
-                        <th align="center" axis="col1" class="handle">
-                            <div style="text-align: center; width: 150px;">审核操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -144,7 +128,7 @@
         cur_page = page; //当前页面 保存为全局变量
         $.ajax({
             type: "POST",
-            url: "/index.php/Index/user/ajaxindex/p/" + page,//+tab,
+            url: "/index.php/Index/Order/ajaxindex/p/" + page,//+tab,
             data: $('#' + tab).serialize(),// 你的formid
             success: function (data) {
                 $("#ajax_return").html('');

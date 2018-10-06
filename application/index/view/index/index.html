@@ -19,6 +19,7 @@
   <script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
   <script type="text/javascript" src="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.js"></script>
   <script type="text/javascript" src="__PUBLIC__/static/js/dialog/dialog.js" id="dialog_js"></script>
+  <script type="text/javascript" src="__PUBLIC__/static/js/jquery.cookie.js"></script>
   <script type="text/javascript" src="__PUBLIC__/static/js/admincp.js"></script>
   <script type="text/javascript" src="__PUBLIC__/static/js/jquery.validation.min.js"></script>
 </head>
@@ -61,6 +62,14 @@
         </ul>
       </div>
     </div>
+    <ul class="operate nc-row">
+      <li style="display: none !important;" tptype="pending_matters"><a class="toast show-option" href="javascript:void(0);" onClick="$.cookie('commonPendingMatters', 0, {expires : -1});ajax_form('pending_matters', '待处理事项', 'http://www.tpshop.cn/admin/index.php?act=common&op=pending_matters', '480');" title="查看待处理事项">&nbsp;<em>0</em></a></li>
+      <!-- li><a class="sitemap show-option" tptype="map_on" href="javascript:void(0);" title="查看全部管理菜单">&nbsp;</a></li -->
+      <!-- li><a class="style-color show-option" id="trace_show" href="javascript:void(0);" title="给管理中心换个颜色">&nbsp;</a></li -->
+      <li><a class="sitemap show-option" id="trace_show" href="{:url('System/cleanCache',array('quick'=>1))}" target="workspace" title="更新缓存">&nbsp;</a></li>
+      <li><a class="homepage show-option" target="_blank" href="/" title="新窗口打开商城首页">&nbsp;</a></li>
+      <li><a class="login-out show-option" href="{:url('Admin/logout')}" title="安全退出管理中心">&nbsp;</a></li>
+    </ul>
   </div>
   <div class="clear"></div>
 </div>

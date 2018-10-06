@@ -1,0 +1,63 @@
+{include file="public/layout" /}
+<body>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>系统设置</h3>
+                <h5>系统信息设置</h5>
+            </div>
+        </div>
+    </div>
+    <form id="kf_form" action="" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label >联系客服称呼</label>
+                </dt>
+                <dd class="opt">
+                    <input type="hidden" name="name_id" value="{$name.system_id}">
+                    <input  name="name" value="{$name.s_value}" class="input-txt" type="text">
+                    <p class="notic">联系客服称呼</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >联系客服电话</label>
+                </dt>
+                <dd class="opt">
+                    <input type="hidden" name="phone_id" value="{$phone.system_id}">
+                    <input id="" name="phone" value="{$phone.s_value}" class="input-txt" type="text">
+                    <p class="notic">联系客服电话</p>
+                </dd>
+            </dl>
+            <div class="bot">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green"
+                   onclick="save()">保存设置</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function save() {
+        $.ajax({
+            url:'/index.php/index/system/edit_kf',
+            data:$("#kf_form").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.closeAll();
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = location.href;
+                } else {
+                    layer.closeAll();
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+        })
+    }
+</script>
+</html>

@@ -23,7 +23,31 @@ function encrypt($str)
 {
     return md5(md5("AUTH_CODE") . $str);
 }
-
+//审核输出过滤器
+function valid_out($valid)
+{
+    if ($valid == "1") echo "待审核"; else if ($valid == "2") echo "已通过"; else "未通过";
+}
+//状态输出过滤器
+function status_out($status)
+{
+    switch ($status){
+        case \app\index\extend\Constant::getODERSTATUSWAITE():
+            echo "待完成";
+            break;
+        case \app\index\extend\Constant::getODERSTATUSCANCEL():
+            echo "已取消";
+            break;
+        case \app\index\extend\Constant::getODERSTATUSDELETE():
+            echo "已删除";
+            break;
+        case \app\index\extend\Constant::getODERSTATUSFINISH():
+            echo "已完成";
+            break;
+        default:
+            echo "异常";
+    }
+}
 //判断app代理
 function isApp()
 {

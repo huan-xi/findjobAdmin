@@ -13,11 +13,13 @@ return [
     // 数据库类型
     'type'           => 'mysql',
     // 服务器地址
-    'hostname'       => '111.230.251.119',
+  //  'hostname'       => '111.230.251.119',
+    'hostname'       => 'localhost',
     // 数据库名
     'database'       => 'findjob',
     // 用户名
-    'username'       => 'findjob',
+    'username'       => 'root',
+ //   'username'       => 'findjob',
     // 密码
     'password'       => '125512',
     // 端口

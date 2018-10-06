@@ -8,10 +8,16 @@
                     <div style="width: 24px;"><i class="ico-check"></i></div>
                 </td>
                 <td align="left" class="">
-                    <div style="text-align: left; width: 50px;">{$vo.name}</div>
+                    <div style="text-align: left; width: 150px;">{$vo.name}</div>
+                </td>
+                <td align="left" class="">
+                    <div style="text-align: left; width: 50px;">{$vo.contacts}</div>
                 </td>
                 <td align="center" class="">
                     <div style="text-align: center; width: 100px;">{$vo.phone}</div>
+                </td>
+                <td align="center" class="">
+                    <div style="text-align: center; width: 200px;">{$vo.address}</div>
                 </td>
                 <td align="center" class="">
                     <div style="text-align: center; width: 150px;">{$vo.create_time/1000|date='Y-m-d H:i',###}</div>
@@ -24,23 +30,20 @@
                 </td>
                 <td align="center" class="handle">
                     <div style="text-align: center; width: 170px; max-width:170px;">
-                        <a href="javascript:void(0)" onClick="edit(this)" data-phone="{$vo.phone}"
-                           data-name="{$vo.name}" data-url="{:url('edit_user')}" data-id="{$vo.user_id}"
-                           class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
-                        <a href="{:url('User/details',array('user_id'=>$vo['user_id']))}"class="btn blue"><i class="fa fa-pencil-square-o"></i>详情</a>
+                        <a href="{:url('details',['vender_id',=> $vo.vender_id])}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                         <a class="btn red" href="javascript:void(0)"
                            data-url="{:$vo.status=='1'?url('del_user'):url('able_user')}"
-                           data-id="{$vo.user_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>{:$vo.status=="1"?"禁用":"启用"}</a>
+                           data-id="{$vo.vender_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>{:$vo.status=="1"?"禁用":"启用"}</a>
                     </div>
                 </td>
                 <td align="center" class="handle">
                     <div style="text-align: center; width: 170px; max-width:170px;">
                         <a class="btn green" href="javascript:void(0)"
                            data-url="{:url('pass')}"
-                           data-id="{$vo.user_id}" onClick="pass(this)"><i class="fa "></i>通过</a>
+                           data-id="{$vo.vender_id}" onClick="pass(this)"><i class="fa "></i>通过</a>
                         <a class="btn red" href="javascript:void(0)"
                            data-url="{:url('not_pass')}"
-                           data-id="{$vo.user_id}" onClick="not_pass(this)"><i class="fa "></i>不通过</a>
+                           data-id="{$vo.vender_id}" onClick="not_pass(this)"><i class="fa "></i>不通过</a>
                     </div>
                 </td>
                 <td align="" class="" style="width: 100%;">

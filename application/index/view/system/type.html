@@ -1,0 +1,123 @@
+{include file="public/layout" /}
+<body>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>工种管理</h3>
+                <h5>系统工种添加与修改</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="ncap-form-default">
+        {foreach $type as $vo}
+        <dl class="row">
+            <dt class="tit">
+                <label for="contact">工种名称</label>
+            </dt>
+            <dd class="opt">
+                <input id="contact" name="contact" value="{$vo.s_value}" class="input-txt" type="text">
+                <a data-id="{$vo.system_id}" onclick="edit_type(this)" class="ncap-btn ncap-btn-green">确定修改</a>
+                <a data-id="{$vo.system_id}" onclick="del_type(this)" class="ncap-btn ncap-btn-red">删除</a>
+            </dd>
+        </dl>
+        {/foreach}
+        <div class="bot">
+            <a href="JavaScript:void(0);" class="save ncap-btn-big ncap-btn-green" onclick="add()">添加工种</a>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function edit_type(obj) {
+        layer.load(2);
+        $.ajax({
+            type: 'post',
+            url: '/index.php/index/system/edit_type.html',
+            data: {
+                id:$(obj).data('id'),
+                name: $(obj).prev().val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.closeAll();
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = location.href;
+                } else {
+                    layer.closeAll();
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+        })
+    }
+    function del_type(obj) {
+        layer.load(2);
+        $.ajax({
+            type: 'post',
+            url: '/index.php/index/system/del_type.html',
+            data: {
+                id:$(obj).data('id'),
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.closeAll();
+                    layer.msg(data.msg, {icon: 1});
+                    location.href = location.href;
+                } else {
+                    layer.closeAll();
+                    layer.alert(data.msg, {icon: 2});
+                }
+            },
+        })
+    }
+    function add() {
+        var edit = layer.open({
+            id: 1,
+            type: 1,
+            title: '添加工种',
+            content: "    <div class=\"ncap-form-default\">\n" +
+                "    <dl class=\"row\">\n" +
+                "        <dt class=\"tit\">\n" +
+                "            <label for=\"contact\">工种名称</label>\n" +
+                "        </dt>\n" +
+                "        <dd class=\"opt\">\n" +
+                "            <input id=\"name\" name=\"contact\" value=\"\" class=\"input-txt\" type=\"text\">\n" +
+                "            <p class=\"notic\">要添加的工种名称</p>\n" +
+                "        </dd>\n" +
+                "    </dl>\n" +
+                "    </div>",
+            btn: ['保存', '取消'],
+            btn1: function () {
+                layer.load(2);
+                $.ajax({
+                    type: 'post',
+                    url: '/index.php/index/system/add_type.html',
+                    data: {
+                        name: $("#name").val(),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            layer.closeAll();
+                            layer.msg(data.msg, {icon: 1});
+                            location.href = location.href;
+                        } else {
+                            layer.closeAll();
+                            layer.alert(data.msg, {icon: 2});
+                        }
+                    },
+                })
+            },
+            btn2: function () {
+                layer.close(edit)
+            }
+        });
+        layer.style(edit, {width: '500px'});
+    }
+</script>
+</html>

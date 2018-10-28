@@ -98,7 +98,7 @@ class  User extends BaseController
         $sort = $post['sort'];
         $valid = $post['valid'];
         if ($valid == '100')
-            $valid = 'valid =1 or valid = 2 or valid = 3';
+            $valid = 'valid = 1 or valid = 2 or valid = 3';
         else
             $valid = 'valid= ' . $valid;
         $status = $post['status'] == '100' ? 'status = ' . Constant::getROUESTATUSNORMAL() . ' or status = ' . Constant::getROUESTATUSFORBID() : 'status = ' . $post['status'];
